@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sadii 🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ── CHANGE 1: @property for animated conic-gradient borders ── */
+@property --ba { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+
+/* ── CHANGE 2: Rich color system with rose-gold accent ── */
+:root {
+  --gold: #c9a44b;
+  --gold-l: #f0d07a;
+  --gold-d: #9a7a30;
+  --rose: #d4897a;
+  --cream: #fdf6e3;
+  --cream-dim: rgba(253,246,227,0.72);
+  --deep: #03070e;
+  --navy: #060d1c;
+  --card-bg: rgba(255,255,255,0.026);
+  --card-b: rgba(201,164,75,0.11);
+}
+
+/* ── CHANGE 3: Full reset + smooth scroll ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── CHANGE 4: Custom 3px gold scrollbar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, var(--gold), var(--rose)); border-radius: 2px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--deep);
+  color: var(--cream);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CHANGE 5: SVG grain/noise texture overlay ── */
+#grain {
+  position: fixed; inset: 0; z-index: 990;
+  pointer-events: none; opacity: 0.028; width: 100%; height: 100%;
+}
+
+/* ── NAMES BACKGROUND WATERMARK ── */
+#bgnames {
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none; overflow: hidden;
+  display: flex; flex-wrap: wrap; align-content: flex-start;
+  gap: 0;
+}
+.bgrow {
+  display: flex; gap: 0; width: 100%;
+  animation: bgdrift 28s linear infinite;
+}
+.bgrow:nth-child(even) { animation-direction: reverse; animation-duration: 34s; }
+.bgrow:nth-child(3n)   { animation-duration: 22s; }
+.bgn {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.65rem);
+  font-weight: 700; font-style: italic;
+  color: rgba(201,164,75,0.055);
+  white-space: nowrap; padding: 0 32px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 20px rgba(201,164,75,0.04);
+  user-select: none;
+  animation: bna 6s ease-in-out infinite alternate;
+}
+.bgn:nth-child(2n) { animation-delay: 1.5s; color: rgba(212,137,122,0.04); }
+.bgn:nth-child(3n) { animation-delay: 3s;   color: rgba(201,164,75,0.038); }
+@keyframes bgdrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes bna {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+
+/* ── FLOATING NAMES (large solo overlays per section) ── */
+.sec-name {
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-style: italic;
+  color: rgba(201,164,75,0.035);
+  pointer-events: none; user-select: none;
+  line-height: 1; z-index: 0;
+  animation: snf 9s ease-in-out infinite;
+}
+@keyframes snf {
+  0%,100% { opacity: 0.7; transform: translateY(0) rotate(var(--rot,0deg)); }
+  50%      { opacity: 1;   transform: translateY(-10px) rotate(var(--rot,0deg)); }
+}
+
+/* ── LOADER NAMES ── */
+.l-names {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem; font-weight: 400; font-style: italic;
+  color: rgba(201,164,75,0.45);
+  letter-spacing: 0.22em; margin-top: 20px;
+  animation: fup 1s ease 0.3s both;
+}
+
+/* ── NAMES BANNER in hero ── */
+#namesbanner {
+  display: flex; align-items: center; gap: 18px;
+  margin-top: 32px;
+  animation: fup 1.5s ease 4s both;
+}
+.nb-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.1rem, 3vw, 1.7rem);
+  font-weight: 400; font-style: italic;
+  letter-spacing: 0.06em;
+}
+.nb-aaru  { color: var(--gold-l); }
+.nb-sadii { color: var(--rose); }
+.nb-amp {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; color: rgba(253,246,227,0.35);
+  animation: hb 2s ease-in-out infinite;
+}
+.nb-forever {
+  font-size: 0.58rem; letter-spacing: 0.45em;
+  text-transform: uppercase; color: rgba(253,246,227,0.22);
+  font-weight: 200; margin-top: 6px; text-align: center;
+  animation: fup 1.5s ease 4.5s both;
+}
+
+/* ── NAMES SEAL (bottom of final section) ── */
+.names-seal {
+  margin-top: 48px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.seal-line {
+  display: flex; align-items: center; gap: 14px;
+  font-family: 'Playfair Display', serif;
+}
+.seal-name {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 400; font-style: italic;
+  text-shadow: 0 0 28px rgba(201,164,75,0.4);
+}
+.seal-name.a { color: var(--gold-l); animation: sna 3s ease-in-out infinite alternate; }
+.seal-name.s { color: var(--rose);   animation: sna 3s ease-in-out infinite alternate-reverse; }
+@keyframes sna {
+  from { text-shadow: 0 0 20px rgba(201,164,75,0.3); }
+  to   { text-shadow: 0 0 40px rgba(201,164,75,0.65), 0 0 70px rgba(201,164,75,0.2); }
+}
+.seal-heart {
+  font-size: 1.5rem; animation: hb 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(212,137,122,0.5));
+}
+.seal-inf {
+  font-size: 0.58rem; letter-spacing: 0.6em; text-transform: uppercase;
+  color: rgba(253,246,227,0.22); font-weight: 200;
+}
+.seal-inf span { color: var(--gold); opacity: 0.5; margin: 0 8px; }
+
+/* ── CHANGE 6: Loading screen with crescent animation ── */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--deep);
+  z-index: 9000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.9s ease, visibility 0.9s ease;
+}
+#loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
+.l-moon {
+  font-size: 4.5rem;
+  animation: lmoon 1.4s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 36px rgba(201,164,75,0.75));
+}
+@keyframes lmoon {
+  from { transform: scale(0.82) rotate(-12deg); opacity: 0.55; }
+  to   { transform: scale(1.1)  rotate(6deg);  opacity: 1;    }
+}
+.l-dots { display: flex; gap: 8px; margin-top: 28px; }
+.l-dot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.3;
+  animation: ldot 1.2s ease-in-out infinite;
+}
+.l-dot:nth-child(2) { animation-delay: 0.2s; }
+.l-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes ldot { 0%,100%{opacity:0.2;transform:scale(0.8)} 50%{opacity:0.9;transform:scale(1.2)} }
+
+/* ── CHANGE 7: Dual-layer cursor (dot + ring + large ambient glow) ── */
+#cdot {
+  width: 7px; height: 7px; background: var(--gold); border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 8999;
+  transform: translate(-50%,-50%);
+  mix-blend-mode: screen;
+}
+#cring {
+  width: 28px; height: 28px;
+  border: 1px solid rgba(201,164,75,0.45); border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 8998;
+  transform: translate(-50%,-50%);
+}
+/* ── CHANGE 8: Ambient cursor glow ── */
+#cglow {
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(201,164,75,0.045) 0%, transparent 68%);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 1;
+  transform: translate(-50%,-50%);
+  transition: transform 0.05s;
+}
+
+/* ── CHANGE 9: Gold glow progress bar ── */
+#progress {
+  position: fixed; top: 0; left: 0;
+  height: 2px; z-index: 8000;
+  background: linear-gradient(90deg, var(--gold-d), var(--gold), var(--gold-l), var(--rose));
+  box-shadow: 0 0 10px var(--gold), 0 0 20px rgba(201,164,75,0.3);
+  width: 0%;
+}
+
+/* ── CHANGE 10: Multi-canvas background (aurora + stars) ── */
+#cv { position: fixed; top:0; left:0; z-index:0; pointer-events:none; }
+
+/* ── CHANGE 11: Side navigation dots with tooltip labels ── */
+#sidenav {
+  position: fixed; right: 18px; top: 50%;
+  transform: translateY(-50%);
+  z-index: 500; display: flex; flex-direction: column; gap: 11px;
+}
+.sdot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(201,164,75,0.2);
+  border: 1px solid rgba(201,164,75,0.15);
+  cursor: pointer; transition: all 0.3s;
+  position: relative;
+}
+.sdot.on { background: var(--gold); box-shadow: 0 0 8px var(--gold), 0 0 16px rgba(201,164,75,0.35); transform: scale(1.4); }
+.sdot:hover { background: rgba(201,164,75,0.55); transform: scale(1.2); }
+.sdot::before {
+  content: attr(data-l);
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.56rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); white-space: nowrap; opacity: 0;
+  font-family: 'DM Sans'; font-weight: 300;
+  transition: opacity 0.2s;
+  background: rgba(3,7,14,0.85);
+  padding: 3px 8px; border-radius: 4px;
+}
+.sdot:hover::before { opacity: 0.85; }
+
+/* ── CHANGE 12: Minimal music player with animated waveform ── */
+#player {
+  position: fixed; top: 18px; left: 18px;
+  z-index: 500;
+  background: rgba(3,7,14,0.75);
+  border: 1px solid rgba(201,164,75,0.14);
+  border-radius: 28px;
+  padding: 8px 18px 8px 14px;
+  backdrop-filter: blur(20px);
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; transition: all 0.3s;
+}
+#player:hover { border-color: rgba(201,164,75,0.35); }
+#pbtn { font-size: 0.72rem; color: var(--gold); min-width: 12px; }
+.wbars { display: flex; gap: 2px; align-items: flex-end; height: 14px; }
+.wb {
+  width: 2px; background: var(--gold); border-radius: 2px;
+  height: 3px; opacity: 0.28; transition: opacity 0.3s;
+}
+.wb.on { opacity: 0.85; animation: wb var(--d) ease-in-out infinite alternate; }
+.wb:nth-child(1){--d:0.45s} .wb:nth-child(2){--d:0.7s} .wb:nth-child(3){--d:0.38s} .wb:nth-child(4){--d:0.58s}
+@keyframes wb { from{height:2px} to{height:13px} }
+#plabel { font-size: 0.58rem; letter-spacing: 0.25em; color: rgba(253,246,227,0.3); text-transform: uppercase; font-weight: 300; }
+
+/* ── CHANGE 13: Section base with reveal animation (scale+fade+translate combined) ── */
+.section {
+  min-height: 100vh;
+  display: flex; justify-content: center; align-items: center; flex-direction: column;
+  padding: 80px 24px; position: relative; z-index: 10;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(50px) scale(0.97);
+  transition: opacity 1.1s cubic-bezier(0.25,0.46,0.45,0.94),
+              transform 1.1s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.reveal.vis { opacity: 1; transform: translateY(0) scale(1); }
+
+/* ── CHANGE 14: Section number / chapter label ── */
+.chap {
+  font-family: 'DM Sans', sans-serif; font-size: 0.52rem; font-weight: 200;
+  letter-spacing: 0.55em; text-transform: uppercase;
+  color: rgba(201,164,75,0.22); margin-bottom: 34px; text-align: center;
+}
+
+/* ═══════════ HERO ═══════════ */
+#hero { opacity: 1; transform: none; }
+
+/* ── CHANGE 15: Moon with orbit ring + multi-layer glow ── */
+.moon-wrap { position: relative; margin-bottom: 44px; }
+.moon-rings {
+  position: absolute; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(201,164,75,0.13) 0%, rgba(201,164,75,0.05) 45%, transparent 68%);
+  border-radius: 50%;
+  animation: rp 3.5s ease-in-out infinite;
+}
+@keyframes rp {
+  0%,100%{opacity:0.5;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}
+}
+/* ── CHANGE 16: Moon orbit ring with travelling star ── */
+.moon-orbit {
+  position: absolute; top:50%; left:50%;
+  transform: translate(-50%,-50%);
+  width: 170px; height: 170px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,164,75,0.07);
+  animation: orb 9s linear infinite;
+}
+.moon-orbit::before {
+  content: '✦'; position: absolute;
+  top: -5px; left: 50%; transform: translateX(-50%);
+  font-size: 0.45rem; color: var(--gold); opacity: 0.7;
+}
+@keyframes orb { to { transform: translate(-50%,-50%) rotate(360deg); } }
+/* ── CHANGE 17: Complex multi-keyframe moon float ── */
+.hero-moon {
+  font-size: 5.8rem; display: block;
+  filter: drop-shadow(0 0 40px rgba(201,164,75,0.65)) drop-shadow(0 0 80px rgba(201,164,75,0.28));
+  animation: mf 6s ease-in-out infinite;
+}
+@keyframes mf {
+  0%   { transform: translateY(0) rotate(-3deg); }
+  30%  { transform: translateY(-14px) rotate(3deg); }
+  60%  { transform: translateY(-8px) rotate(-1deg); }
+  100% { transform: translateY(0) rotate(-3deg); }
+}
+
+/* ── CHANGE 18: Hero title with Playfair Display ── */
+#htitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5.5vw, 3.6rem);
+  font-weight: 400; color: var(--gold-l);
+  text-align: center; min-height: 1.3em; letter-spacing: 0.02em;
+}
+/* ── CHANGE 19: Blinking cursor with gold color ── */
+.cblink {
+  display: inline-block; width: 2px; height: 0.85em;
+  background: var(--gold); vertical-align: middle; margin-left: 3px;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+/* ── CHANGE 20: Hero tagline with wide letter spacing ── */
+.htagline {
+  font-size: 0.62rem; letter-spacing: 0.52em;
+  color: rgba(253,246,227,0.25); text-transform: uppercase;
+  margin-top: 20px; font-weight: 200;
+  animation: fup 1.5s ease 3.2s both;
+}
+/* ── CHANGE 21: Animated scroll cue (line draws itself) ── */
+.scue {
+  position: absolute; bottom: 28px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: fup 1s ease 4.2s both;
+}
+.scue span { font-size: 0.52rem; letter-spacing: 0.42em; text-transform: uppercase; color: rgba(253,246,227,0.22); }
+.sline {
+  width: 1px; height: 34px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: sl 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes sl {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+  49%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  50%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+@keyframes fup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+
+/* ═══════════ CARDS ═══════════ */
+
+/* ── CHANGE 22: Glassmorphism card with multi-layer depth ── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-b);
+  border-radius: 24px;
+  padding: 44px 52px;
+  max-width: 700px; width: 100%;
+  backdrop-filter: blur(28px) saturate(1.2);
+  position: relative; overflow: hidden;
+  transition: border-color 0.5s, box-shadow 0.5s;
+  transform-style: preserve-3d;
+}
+/* ── CHANGE 23: Top highlight gradient line ── */
+.card::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(201,164,75,0.5), transparent);
+}
+/* ── CHANGE 24: Radial glow follows cursor inside card ── */
+.card::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 24px;
+  background: radial-gradient(ellipse at var(--mx,50%) var(--my,50%), rgba(201,164,75,0.065) 0%, transparent 58%);
+  opacity: 0; pointer-events: none; transition: opacity 0.4s;
+}
+.card:hover::after { opacity: 1; }
+.card:hover {
+  border-color: rgba(201,164,75,0.3);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.52), 0 0 40px rgba(201,164,75,0.04);
+}
+/* ── CHANGE 25: Shimmer sweep on hover ── */
+.shim {
+  position: absolute; inset: 0;
+  background: linear-gradient(108deg, transparent 28%, rgba(201,164,75,0.07) 50%, transparent 72%);
+  transform: translateX(-120%); pointer-events: none;
+  transition: transform 0.65s ease;
+}
+.card:hover .shim { transform: translateX(120%); }
+
+/* ── CHANGE 26: Decorative large quote mark ── */
+.dq {
+  position: absolute; font-family: 'Playfair Display', serif;
+  font-size: 9rem; color: rgba(201,164,75,0.035);
+  line-height: 1; top: -8px; left: 14px; font-weight: 700; pointer-events: none;
+}
+
+/* ── CHANGE 27: Rotating conic-gradient spinning border for Promise card ── */
+.card-glow-wrap {
+  position: relative; padding: 1.5px; border-radius: 26px;
+  background: conic-gradient(from var(--ba), transparent 0%, var(--gold) 10%, var(--rose) 18%, transparent 28%);
+  animation: spinba 4s linear infinite;
+  max-width: 700px; width: 100%;
+}
+@keyframes spinba { to { --ba: 360deg; } }
+.card-glow-inner {
+  background: rgba(5,10,20,0.96);
+  border-radius: 24px; padding: 44px 52px;
+  position: relative; overflow: hidden;
+  backdrop-filter: blur(28px);
+}
+.card-glow-inner::before {
+  content: '';
+  position: absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, rgba(201,164,75,0.42), transparent);
+}
+
+/* ── CHANGE 28: Memory card — warm amber tint + special header ── */
+.card-mem {
+  background: rgba(201,164,75,0.04);
+  border-color: rgba(201,164,75,0.2);
+}
+.mem-head {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 26px;
+}
+.mem-icon { font-size: 1.1rem; opacity: 0.65; }
+.mem-date {
+  font-family: 'DM Sans'; font-size: 0.6rem; letter-spacing: 0.42em;
+  text-transform: uppercase; color: var(--gold); opacity: 0.72; font-weight: 400;
+}
+.mem-hr { flex:1; height:1px; background: rgba(201,164,75,0.18); }
+
+/* ── CHANGE 29: Animated divider line draws in from center ── */
+.divider { display: flex; align-items: center; gap: 12px; margin: 28px auto; width: 200px; }
+.dl {
+  flex:1; height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transform: scaleX(0); transition: transform 0.85s ease 0.5s;
+}
+.reveal.vis .dl { transform: scaleX(1); }
+.dd {
+  width: 5px; height: 5px; background: var(--gold); border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 8px var(--gold), 0 0 18px rgba(201,164,75,0.4);
+}
+
+/* ═══════════ TYPOGRAPHY ═══════════ */
+
+/* ── CHANGE 30: Playfair Display for display headings ── */
+.disp {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 3.8vw, 2.75rem);
+  font-weight: 400; line-height: 1.25; color: var(--cream); margin-bottom: 14px;
+}
+.disp em { font-style: italic; color: var(--gold-l); }
+
+/* ── CHANGE 31: EB Garamond for body — elegant & readable ── */
+.bt {
+  font-family: 'EB Garamond', serif;
+  font-size: clamp(1.12rem, 2.4vw, 1.36rem);
+  font-weight: 300; line-height: 2.05;
+  color: var(--cream-dim); letter-spacing: 0.01em;
+}
+.bt strong { color: var(--cream); font-weight: 400; }
+.bt em { color: var(--gold-l); font-style: italic; }
+
+/* ── CHANGE 32: Glowing text for key phrases ── */
+.glow { color: var(--gold-l); text-shadow: 0 0 22px rgba(240,208,122,0.45); }
+
+/* ── CHANGE 33: Tag / label styling ── */
+.tag {
+  font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.62; margin-bottom: 18px; display: block; font-weight: 400;
+}
+
+/* ── CHANGE 34: Heartbeat on ❤️ ── */
+.hb { display:inline-block; animation: hb 1.6s ease-in-out infinite; }
+@keyframes hb {
+  0%,100%{transform:scale(1)} 14%{transform:scale(1.32)} 28%{transform:scale(1.05)} 42%{transform:scale(1.22)} 70%{transform:scale(1)}
+}
+
+/* ═══════════ EMOJI SECTION ═══════════ */
+
+/* ── CHANGE 35: Emoji cards — spring bounce + bottom glow on hover ── */
+.egrid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; max-width: 500px; width: 100%; }
+.ecard {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(201,164,75,0.07);
+  border-radius: 22px; padding: 28px 12px; text-align: center;
+  transition: all 0.38s cubic-bezier(0.34,1.56,0.64,1);
+  cursor: default; position: relative; overflow: hidden;
+}
+.ecard::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+  background: radial-gradient(ellipse at bottom, rgba(201,164,75,0.1), transparent 70%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.ecard:hover {
+  transform: translateY(-9px) scale(1.03);
+  border-color: rgba(201,164,75,0.32);
+  box-shadow: 0 18px 42px rgba(0,0,0,0.32), 0 0 20px rgba(201,164,75,0.06);
+}
+.ecard:hover::after { opacity: 1; }
+/* ── CHANGE 36: Staggered float animations on emoji ── */
+.ecard .e { font-size: 2.3rem; display: block; margin-bottom: 10px; animation: ef 3.5s ease-in-out infinite; }
+.ecard:nth-child(2) .e { animation-delay: 0.6s; }
+.ecard:nth-child(3) .e { animation-delay: 1.2s; }
+@keyframes ef { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.ecard .el { font-size: 0.66rem; letter-spacing: 0.07em; color: rgba(253,246,227,0.38); font-family: 'DM Sans'; font-weight: 300; line-height: 1.4; }
+
+/* ═══════════ SECRET BUTTON ═══════════ */
+
+/* ── CHANGE 37: Secret button with conic spin border + italic serif font ── */
+.sbtn {
+  padding: 15px 42px;
+  border: 1px solid rgba(201,164,75,0.22);
+  background: transparent; color: var(--gold-l);
+  border-radius: 50px; cursor: pointer;
+  font-family: 'EB Garamond', serif;
+  font-size: 1.18rem; font-style: italic; letter-spacing: 0.05em;
+  transition: all 0.4s; position: relative; overflow: hidden;
+}
+.sbtn::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50px;
+  background: conic-gradient(from var(--ba), transparent 0%, rgba(201,164,75,0.12) 12%, transparent 25%);
+  animation: spinba 3s linear infinite;
+}
+.sbtn:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 32px rgba(201,164,75,0.22), inset 0 0 24px rgba(201,164,75,0.03);
+  transform: scale(1.03);
+}
+/* ── CHANGE 38: Ripple on click ── */
+.ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(201,164,75,0.28);
+  transform: scale(0); animation: ripple 0.65s ease-out;
+  pointer-events: none;
+}
+@keyframes ripple { to { transform: scale(4.5); opacity: 0; } }
+
+/* ── CHANGE 39: Secret reveal with blur + scale animation ── */
+#scret { display:none; margin-top: 30px; animation: srev 1s ease both; }
+#scret.on { display: block; }
+@keyframes srev {
+  from { opacity:0; transform: scale(0.9) translateY(18px); filter: blur(6px); }
+  to   { opacity:1; transform: none; filter: blur(0); }
+}
+
+/* ═══════════ FINAL SECTION ═══════════ */
+
+/* ── CHANGE 40: Final text with Playfair at large scale ── */
+.ftxt {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 400; line-height: 1.3; text-align: center; max-width: 620px;
+}
+.ftxt .gl { color: var(--gold-l); font-style: italic; display: block; }
+/* ── CHANGE 41: Signature line at bottom of final section ── */
+.ftxt .sig {
+  font-size: 0.52em; letter-spacing: 0.4em; text-transform: uppercase;
+  color: rgba(253,246,227,0.24); font-family: 'DM Sans'; font-weight: 200;
+  display: block; margin-top: 28px;
+}
+
+/* ── CHANGE 42: Floating heart particles for final section ── */
+.hp {
+  position: fixed; pointer-events: none;
+  z-index: 9999; animation: hfly 2.2s ease-out both;
+}
+@keyframes hfly {
+  0%  { opacity: 1; transform: translate(0,0) scale(1) rotate(0deg); }
+  100%{ opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2) rotate(var(--rot)); }
+}
+
+/* ── CHANGE 43: Floating crescent decoratives inside cards ── */
+.fdeco {
+  position: absolute; pointer-events: none; opacity: 0.1;
+  animation: fd 7s ease-in-out infinite;
+}
+@keyframes fd { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-14px) rotate(12deg)} }
+
+/* ── CHANGE 44: Per-section ambient color shift via body class ── */
+body.s0 { --aurora-tint: rgba(201,164,75,0.03); }
+body.s1 { --aurora-tint: rgba(212,137,122,0.025); }
+body.s3 { --aurora-tint: rgba(100,160,200,0.025); }
+
+/* ── CHANGE 45: Mobile optimizations ── */
+@media (max-width: 520px) {
+  .card, .card-glow-inner { padding: 28px 22px; }
+  .egrid { gap: 10px; }
+  .ecard { padding: 18px 8px; }
+  #sidenav { display: none; }
+  #player { padding: 6px 12px 6px 10px; }
+  .disp { font-size: clamp(1.5rem,5vw,2rem); }
+}
+
+/* ── CHANGE 46: Keyboard-accessible focus styles ── */
+button:focus-visible, .sdot:focus-visible {
+  outline: 1px solid var(--gold); outline-offset: 3px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── CHANGE 5: Inline SVG for noise/grain ── -->
+<svg id="grain" xmlns="http://www.w3.org/2000/svg">
+  <filter id="nf">
+    <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>
+  <rect width="100%" height="100%" filter="url(#nf)"/>
+</svg>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-moon">🌙</div>
+  <div class="l-dots"><div class="l-dot"></div><div class="l-dot"></div><div class="l-dot"></div></div>
+  <p class="l-names">Aaru &amp; Sadii</p>
+</div>
+
+<!-- BACKGROUND NAMES WATERMARK -->
+<div id="bgnames"></div>
+
+<!-- CURSOR -->
+<div id="cdot"></div>
+<div id="cring"></div>
+<div id="cglow"></div>
+
+<!-- PROGRESS -->
+<div id="progress"></div>
+
+<!-- CANVAS -->
+<canvas id="cv"></canvas>
+
+<!-- SIDE NAV -->
+<nav id="sidenav" aria-label="Page sections">
+  <div class="sdot on" data-l="home"     tabindex="0" onclick="goSec(0)"></div>
+  <div class="sdot"    data-l="eid"      tabindex="0" onclick="goSec(1)"></div>
+  <div class="sdot"    data-l="world"    tabindex="0" onclick="goSec(2)"></div>
+  <div class="sdot"    data-l="memory"   tabindex="0" onclick="goSec(3)"></div>
+  <div class="sdot"    data-l="honest"   tabindex="0" onclick="goSec(4)"></div>
+  <div class="sdot"    data-l="before"   tabindex="0" onclick="goSec(5)"></div>
+  <div class="sdot"    data-l="distance" tabindex="0" onclick="goSec(6)"></div>
+  <div class="sdot"    data-l="promise"  tabindex="0" onclick="goSec(7)"></div>
+  <div class="sdot"    data-l="us"       tabindex="0" onclick="goSec(8)"></div>
+  <div class="sdot"    data-l="secret"   tabindex="0" onclick="goSec(9)"></div>
+  <div class="sdot"    data-l="always"   tabindex="0" onclick="goSec(10)"></div>
+</nav>
+
+<!-- MUSIC PLAYER -->
+<div id="player" onclick="toggleMusic()" role="button" aria-label="Toggle music">
+  <span id="pbtn">▶</span>
+  <div class="wbars">
+    <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+  </div>
+  <span id="plabel">music</span>
+</div>
+<audio id="bgm" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mp3">
+</audio>
+
+<!-- ═══════ SECTIONS ═══════ -->
+
+<!-- 0: HERO -->
+<div class="section" id="s0" data-si="0">
+  <!-- Large background name -->
+  <div class="sec-name" style="font-size:clamp(5rem,18vw,14rem);bottom:-2rem;right:-1rem;--rot:-8deg;opacity:0.4;">A&amp;S</div>
+  <div class="moon-wrap">
+    <div class="moon-rings"></div>
+    <div class="moon-orbit"></div>
+    <span class="hero-moon">🌙</span>
+  </div>
+  <h1 id="htitle"><span class="cblink"></span></h1>
+  <p class="htagline">a message for you · always</p>
+  <!-- Names banner -->
+  <div id="namesbanner">
+    <span class="nb-name nb-aaru">Aaru</span>
+    <span class="nb-amp">♾</span>
+    <span class="nb-name nb-sadii">Sadii</span>
+  </div>
+  <p class="nb-forever">now &amp; forever</p>
+  <div class="scue">
+    <span>scroll</span>
+    <div class="sline"></div>
+  </div>
+</div>
+
+<!-- 1: EID -->
+<div class="section reveal" id="s1" data-si="1">
+  <div class="sec-name" style="font-size:clamp(4rem,14vw,11rem);top:10%;left:-2%;--rot:6deg;animation-delay:1s">Sadii</div>
+  <p class="chap">— 01 —</p>
+  <div class="card">
+    <div class="shim"></div>
+    <div class="dq">"</div>
+    <span class="tag">for sadii</span>
+    <h2 class="disp">Eid Mubarak, my <em>Pasanddedi Aurat</em> <span class="hb">❤️</span></h2>
+    <div class="divider"><div class="dl"></div><div class="dd"></div><div class="dl"></div></div>
+    <p class="bt">Out of everyone in this world…<br>my heart still chose you.<br>And it <em>always will.</em></p>
+  </div>
+</div>
+
+<!-- 2: WORLD -->
+<div class="section reveal" id="s2" data-si="2">
+  <div class="sec-name" style="font-size:clamp(3.5rem,12vw,10rem);bottom:8%;right:-1%;--rot:-5deg;animation-delay:2s">Aaru</div>
+  <p class="chap">— 02 —</p>
+  <div class="card">
+    <div class="shim"></div>
+    <div class="dq">"</div>
+    <div class="fdeco" style="bottom:18px;right:22px;font-size:2rem;animation-delay:1s">🌙</div>
+    <p class="bt">
+      You once said you wanted to<br>buy the whole world for me…<br><br>
+      <strong>I never needed the world.</strong><br>
+      I just needed <em>you.</em>
+    </p>
+  </div>
+</div>
+
+<!-- 3: MEMORY -->
+<div class="section reveal" id="s3" data-si="3">
+  <p class="chap">— 03 —</p>
+  <div class="card card-mem">
+    <div class="shim"></div>
+    <div class="mem-head">
+      <span class="mem-icon">📚</span>
+      <span class="mem-date">21st Feb · library · night</span>
+      <div class="mem-hr"></div>
+    </div>
+    <p class="bt">
+      You brought food like we owned the place.<br><br>
+      But what stayed with me…<br>
+      was that look right before you left.<br><br>
+      <strong>You didn't want to go.</strong><br>
+      And I knew it.
+    </p>
+  </div>
+</div>
+
+<!-- 4: HONEST -->
+<div class="section reveal" id="s4" data-si="4">
+  <p class="chap">— 04 —</p>
+  <div class="card">
+    <div class="shim"></div>
+    <p class="bt">
+      You're honest… even when it hurts.<br><br>
+      And out of everyone,<br>
+      you chose <strong>me</strong> to open up to.<br><br>
+      That's rare.<br>
+      <em>That's everything.</em>
+    </p>
+  </div>
+</div>
+
+<!-- 5: BEFORE YOU -->
+<div class="section reveal" id="s5" data-si="5">
+  <p class="chap">— 05 —</p>
+  <div class="card">
+    <div class="shim"></div>
+    <div class="dq">"</div>
+    <p class="bt">
+      Before you…<br>
+      I didn't even take care of myself.<br><br>
+      Now I think bigger.<br>
+      I move differently.<br><br>
+      <span class="glow">Because of you.</span>
+    </p>
+  </div>
+</div>
+
+<!-- 6: DISTANCE -->
+<div class="section reveal" id="s6" data-si="6">
+  <p class="chap">— 06 —</p>
+  <div class="card">
+    <div class="shim"></div>
+    <p class="bt">
+      You think I might change…<br><br>
+      But distance didn't reduce anything.<br><br>
+      <strong>It made everything stronger.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- 7: PROMISE — spinning border card -->
+<div class="section reveal" id="s7" data-si="7">
+  <div class="sec-name" style="font-size:clamp(3rem,11vw,9rem);top:12%;right:-1%;--rot:-10deg;animation-delay:0.5s">Forever</div>
+  <p class="chap">— 07 —</p>
+  <div class="card-glow-wrap">
+    <div class="card-glow-inner">
+      <span class="tag">a promise</span>
+      <p class="bt">
+        About your fear…<br>
+        that my parents won't accept you —<br><br>
+        I won't just hope for the best.<br><br>
+        <strong>I will raise myself to be the man<br>
+        worthy enough to bring you home.</strong>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- 8: EMOJIS -->
+<div class="section reveal" id="s8" data-si="8">
+  <p class="chap">— 08 —</p>
+  <div class="egrid">
+    <div class="ecard">
+      <span class="e">🐧</span><span class="el">I understand you</span>
+    </div>
+    <div class="ecard">
+      <span class="e">💅</span><span class="el">I see that pride</span>
+    </div>
+    <div class="ecard">
+      <span class="e">👉👈</span><span class="el">still my favorite</span>
+    </div>
+  </div>
+</div>
+
+<!-- 9: SECRET -->
+<div class="section reveal" id="s9" data-si="9">
+  <p class="chap">— 09 —</p>
+  <button class="sbtn" id="sBtn" onclick="doReveal(event)">
+    Don't open this unless you feel something…
+  </button>
+  <div id="scret">
+    <div class="card" style="border-color:rgba(201,164,75,0.3);text-align:center;max-width:520px;">
+      <div class="shim"></div>
+      <p class="bt" style="color:var(--cream);font-size:clamp(1.1rem,2.5vw,1.38rem);line-height:2;">
+        If there's one thing I got right<br>
+        in this entire life…<br><br>
+        <strong style="font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold-l);display:block;margin-top:6px;">
+          it was choosing you.
+        </strong>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- 10: FINAL -->
+<div class="section reveal" id="s10" data-si="10">
+  <div class="sec-name" style="font-size:clamp(5rem,20vw,16rem);top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);--rot:-8deg;opacity:0.5">A&amp;S</div>
+  <p class="ftxt">
+    Stay…
+    <span class="gl">better, stronger,</span>
+    with me. 🌙
+    <span class="sig">— always yours —</span>
+  </p>
+  <!-- Names seal -->
+  <div class="names-seal">
+    <div class="seal-line">
+      <span class="seal-name a">Aaru</span>
+      <span class="seal-heart">❤️</span>
+      <span class="seal-name s">Sadii</span>
+    </div>
+    <p class="seal-inf">
+      <span>✦</span> now &amp; forever <span>✦</span>
+    </p>
+  </div>
+</div>
+
+<!-- ─────────────────── JAVASCRIPT ─────────────────── -->
+<script>
+// ── 1. LOADER ────────────────────────────────────────────────────
+window.addEventListener('load', () =>
+  setTimeout(() => document.getElementById('loader').classList.add('out'), 1500)
+);
+
+// ── BACKGROUND NAMES WATERMARK ───────────────────────────────────
+(function buildBgNames() {
+  const wrap = document.getElementById('bgnames');
+  const phrases = [
+    'Aaru & Sadii', '♾', 'Now & Forever',
+    'A ❤ S', 'Always', 'Aaru & Sadii', '✦',
+    'نام تیرا', 'Always & Forever', '🌙'
+  ];
+  const rowCount = Math.ceil(window.innerHeight / 52) + 2;
+  for (let r = 0; r < rowCount; r++) {
+    const row = document.createElement('div');
+    row.className = 'bgrow';
+    row.style.paddingTop = '14px';
+    // Each row: duplicate phrases so the drift animation loops seamlessly
+    const rowPhrases = [...phrases, ...phrases, ...phrases];
+    rowPhrases.forEach(p => {
+      const span = document.createElement('span');
+      span.className = 'bgn';
+      span.textContent = p;
+      span.style.animationDelay = Math.random()*4+'s';
+      row.appendChild(span);
+    });
+    wrap.appendChild(row);
+  }
+})();
+
+// ── 2. CURSOR: dot tracks mouse instantly ────────────────────────
+const cdot  = document.getElementById('cdot');
+const cring = document.getElementById('cring');
+const cglow = document.getElementById('cglow');
+let mx=0, my=0, rx=0, ry=0, gx=0, gy=0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cdot.style.left = mx+'px'; cdot.style.top = my+'px';
+  // Update radial-glow position on cards
+  document.querySelectorAll('.card, .card-glow-inner').forEach(c => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', ((mx-r.left)/r.width*100)+'%');
+    c.style.setProperty('--my', ((my-r.top)/r.height*100)+'%');
+  });
+});
+
+// ── 3. SMOOTH RING + GLOW FOLLOW (lerp) ──────────────────────────
+function raf() {
+  rx += (mx-rx)*0.13; ry += (my-ry)*0.13;
+  gx += (mx-gx)*0.06; gy += (my-gy)*0.06;
+  cring.style.left = rx+'px'; cring.style.top = ry+'px';
+  cglow.style.left = gx+'px'; cglow.style.top  = gy+'px';
+  requestAnimationFrame(raf);
+}
+raf();
+
+// ── 4. CURSOR SIZE CHANGE on interactive elements ────────────────
+document.querySelectorAll('button, .sdot, .ecard, a').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cring.style.width = cring.style.height = '44px';
+    cring.style.borderColor = 'var(--gold)';
+    cring.style.transition = 'all 0.25s ease';
+  });
+  el.addEventListener('mouseleave', () => {
+    cring.style.width = cring.style.height = '28px';
+    cring.style.borderColor = 'rgba(201,164,75,0.45)';
+  });
+});
+
+// ── 5. PROGRESS BAR ──────────────────────────────────────────────
+window.addEventListener('scroll', onScroll, { passive: true });
+function onScroll() {
+  const p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  document.getElementById('progress').style.width = p + '%';
+  updateNav(); revealAll();
+}
+
+// ── 6. SIDE NAV DOTS ─────────────────────────────────────────────
+const secs   = document.querySelectorAll('.section');
+const sdots  = document.querySelectorAll('.sdot');
+function updateNav() {
+  let cur = 0;
+  secs.forEach((s,i) => {
+    if (s.getBoundingClientRect().top < window.innerHeight * 0.55) cur = i;
+  });
+  sdots.forEach((d,i) => d.classList.toggle('on', i===cur));
+}
+function goSec(i) { secs[i]?.scrollIntoView({ behavior:'smooth' }); }
+// ── CHANGE: keyboard arrow nav ──────────────────────────────────
+document.addEventListener('keydown', e => {
+  const cur = [...sdots].findIndex(d=>d.classList.contains('on'));
+  if (e.key==='ArrowDown' && cur<secs.length-1) goSec(cur+1);
+  if (e.key==='ArrowUp'   && cur>0)             goSec(cur-1);
+});
+
+// ── 7. MUSIC ──────────────────────────────────────────────────────
+let isPlay = false;
+const bgm   = document.getElementById('bgm');
+const pbtn  = document.getElementById('pbtn');
+const wbs   = document.querySelectorAll('.wb');
+function toggleMusic() {
+  isPlay = !isPlay;
+  isPlay ? bgm.play() : bgm.pause();
+  pbtn.textContent = isPlay ? '⏸' : '▶';
+  wbs.forEach(w => w.classList.toggle('on', isPlay));
+}
+
+// ── 8. TYPING — variable speed for realism ────────────────────────
+const htitle   = document.getElementById('htitle');
+const fullText = "Eid Mubarak, Sadii 🌙";
+let ti = 0;
+function type() {
+  if (ti < fullText.length) {
+    htitle.innerHTML = fullText.substring(0,ti+1)+'<span class="cblink"></span>';
+    ti++;
+    const ch = fullText[ti-1];
+    const delay = ch===',' || ch==='.' ? 200 : ch===' ' ? 45 : (Math.random()*38+52);
+    setTimeout(type, delay);
+  }
+}
+setTimeout(type, 1700);
+
+// ── 9. SCROLL REVEAL (scale + fade + translate) ───────────────────
+function revealAll() {
+  document.querySelectorAll('.reveal:not(.vis)').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 55)
+      el.classList.add('vis');
+  });
+}
+revealAll();
+
+// ── 10. 3D CARD TILT (desktop only) ──────────────────────────────
+if (window.matchMedia('(hover:hover)').matches) {
+  document.querySelectorAll('.card, .card-glow-inner').forEach(card => {
+    card.addEventListener('mouseenter', () => card.style.transition='transform 0.1s ease');
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.6s ease, border-color 0.5s, box-shadow 0.5s';
+      card.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg)';
+    });
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const xp = (e.clientX - r.left) / r.width  - 0.5;
+      const yp = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `perspective(900px) rotateY(${xp*7}deg) rotateX(${-yp*5}deg)`;
+    });
+  });
+}
+
+// ── 11. SECRET REVEAL ────────────────────────────────────────────
+function doReveal(e) {
+  const btn = document.getElementById('sBtn');
+  // Ripple
+  const rp = document.createElement('span');
+  rp.classList.add('ripple');
+  const r = btn.getBoundingClientRect();
+  const sz = Math.max(r.width, r.height);
+  rp.style.cssText = `width:${sz}px;height:${sz}px;left:${e.clientX-r.left-sz/2}px;top:${e.clientY-r.top-sz/2}px`;
+  btn.appendChild(rp);
+  setTimeout(() => rp.remove(), 700);
+  // Fade out button, reveal card
+  btn.style.cssText = 'opacity:0;transform:scale(0.88);transition:all 0.4s ease;pointer-events:none';
+  setTimeout(() => {
+    btn.style.display = 'none';
+    document.getElementById('scret').classList.add('on');
+  }, 380);
+}
+
+// ── 12. FINAL SECTION — particle burst ───────────────────────────
+const finalEl = document.getElementById('s10');
+const fObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    for (let i=0; i<22; i++) setTimeout(burst, i*80);
+    fObs.disconnect();
+  }
+}, { threshold: 0.4 });
+fObs.observe(finalEl);
+
+function burst() {
+  const h = document.createElement('div');
+  h.classList.add('hp');
+  h.textContent = ['❤️','🌙','✦','🤍','💛','⭐'][Math.floor(Math.random()*6)];
+  const cx = window.innerWidth*0.5 + (Math.random()-0.5)*window.innerWidth*0.5;
+  const cy = window.innerHeight*0.5 + (Math.random()-0.5)*window.innerHeight*0.3;
+  h.style.left = cx+'px'; h.style.top = cy+'px';
+  h.style.fontSize = (0.7+Math.random()*1.4)+'rem';
+  h.style.setProperty('--tx', (Math.random()-0.5)*280+'px');
+  h.style.setProperty('--ty', -(Math.random()*200+60)+'px');
+  h.style.setProperty('--rot', (Math.random()-0.5)*90+'deg');
+  h.style.animationDelay = Math.random()*0.4+'s';
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 2600);
+}
+
+// ── 13. CANVAS — Aurora + 3-layer stars + shooting stars ─────────
+const canvas = document.getElementById('cv');
+const ctx    = canvas.getContext('2d');
+function resizeCv() { canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+resizeCv();
+window.addEventListener('resize', resizeCv, { passive:true });
+
+// ── CHANGE: 3-layer parallax star system ─────────────────────────
+const layers = [
+  // layer 0: far — tiny, cool blue-white, slow
+  Array.from({length:180}, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random()*0.75+0.1,
+    ph: Math.random()*Math.PI*2,
+    sp: Math.random()*0.005+0.002,
+    pax: 0.015, // parallax multiplier
+    col: () => `rgba(${180+rn(60)},${188+rn(45)},${220+rn(35)},`
+  })),
+  // layer 1: mid — medium, gold-warm
+  Array.from({length:90}, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random()*1.1+0.35,
+    ph: Math.random()*Math.PI*2,
+    sp: Math.random()*0.008+0.004,
+    pax: 0.04,
+    col: () => `rgba(${215+rn(40)},${195+rn(40)},${140+rn(60)},`
+  })),
+  // layer 2: near — few, large, warm cream
+  Array.from({length:28}, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random()*1.7+0.9,
+    ph: Math.random()*Math.PI*2,
+    sp: Math.random()*0.012+0.007,
+    pax: 0.08,
+    col: () => `rgba(253,246,227,`
+  }))
+];
+function rn(n) { return Math.floor(Math.random()*n); }
+
+// ── CHANGE: Aurora blobs with drift ──────────────────────────────
+const blobs = [
+  {x:.18,y:.25,r:.38,col:'rgba(28,55,130,0.038)', dx:.00025, dy:.00018},
+  {x:.72,y:.55,r:.42,col:'rgba(85,38,128,0.028)', dx:-.00018, dy:.00025},
+  {x:.48,y:.82,r:.32,col:'rgba(160,105,28,0.028)', dx:.00033, dy:-.00015},
+  {x:.08,y:.65,r:.28,col:'rgba(18,95,85,0.022)',  dx:.00022, dy:-.00028},
+];
+
+// Shooting stars
+let shooters = [];
+function addShooter() {
+  shooters.push({
+    x: Math.random()*canvas.width*.75,
+    y: Math.random()*canvas.height*.38,
+    vx: 3.8+Math.random()*4,
+    vy: 1.3+Math.random()*2,
+    life:1,
+    rgb: Math.random()>.45 ? [240,208,122] : [200,210,255]
+  });
+}
+setInterval(addShooter, 5000);
+setTimeout(addShooter, 2200);
+
+let scrollY = 0;
+window.addEventListener('scroll', () => scrollY=window.scrollY, { passive:true });
+
+function render() {
+  const W=canvas.width, H=canvas.height, t=Date.now()/1000;
+  ctx.clearRect(0,0,W,H);
+
+  // Aurora blobs
+  blobs.forEach(b => {
+    b.x = ((b.x+b.dx+1)%1);
+    b.y = ((b.y+b.dy+1)%1);
+    const g = ctx.createRadialGradient(b.x*W,b.y*H,0, b.x*W,b.y*H, b.r*W);
+    g.addColorStop(0, b.col); g.addColorStop(1,'transparent');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  });
+
+  // Stars (parallax per layer)
+  layers.forEach((layer, li) => {
+    const px = scrollY * layer[0].pax;
+    layer.forEach(s => {
+      const a = 0.28 + 0.62*Math.abs(Math.sin(t*s.sp*80+s.ph));
+      const yy = ((s.y*H + px) % H + H) % H;
+      ctx.beginPath();
+      ctx.arc(s.x*W, yy, s.r, 0, Math.PI*2);
+      ctx.fillStyle = s.col() + (a*(0.45+li*0.22)) + ')';
+      ctx.fill();
+    });
+  });
+
+  // Shooting stars
+  shooters = shooters.filter(s=>s.life>0);
+  shooters.forEach(s => {
+    s.x+=s.vx; s.y+=s.vy; s.life-=0.017;
+    const [r,g,b]=s.rgb;
+    const gr=ctx.createLinearGradient(s.x,s.y, s.x-s.vx*16,s.y-s.vy*16);
+    gr.addColorStop(0,`rgba(${r},${g},${b},${s.life})`);
+    gr.addColorStop(.45,`rgba(${r},${g},${b},${s.life*.35})`);
+    gr.addColorStop(1,'transparent');
+    ctx.beginPath();
+    ctx.moveTo(s.x,s.y);
+    ctx.lineTo(s.x-s.vx*16,s.y-s.vy*16);
+    ctx.strokeStyle=gr; ctx.lineWidth=1.6; ctx.stroke();
+    // sparkle head
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,2.8,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${r},${g},${b},${s.life*.85})`;
+    ctx.fill();
+    // small cross sparkle
+    ctx.strokeStyle=`rgba(${r},${g},${b},${s.life*.5})`;
+    ctx.lineWidth=0.8;
+    [[-4,0],[4,0],[0,-4],[0,4]].forEach(([dx,dy]) => {
+      ctx.beginPath(); ctx.moveTo(s.x,s.y);
+      ctx.lineTo(s.x+dx,s.y+dy); ctx.stroke();
+    });
+  });
+  // Floating canvas name watermarks (large, very subtle)
+  const cvNames = [
+    {x:0.15, y:0.3, txt:'Aaru & Sadii', size:72, a:0.018, rot:-0.12},
+    {x:0.55, y:0.62, txt:'♾ Forever ♾', size:48, a:0.015, rot:0.08},
+    {x:0.3,  y:0.82, txt:'A & S',        size:90, a:0.02,  rot:-0.06},
+    {x:0.72, y:0.18, txt:'Now & Always', size:40, a:0.013, rot:0.14},
+  ];
+  cvNames.forEach((n, i) => {
+    const pulse = 0.7 + 0.3*Math.sin(t*0.4 + i*1.5);
+    ctx.save();
+    ctx.translate(n.x*W, n.y*H);
+    ctx.rotate(n.rot);
+    ctx.font = `italic ${n.size}px 'Playfair Display', serif`;
+    ctx.fillStyle = `rgba(201,164,75,${n.a * pulse})`;
+    ctx.textAlign = 'center';
+    ctx.fillText(n.txt, 0, 0);
+    ctx.restore();
+  });
+
+  requestAnimationFrame(render);
+}
+render();
+</script>
+</body>
+</html>
